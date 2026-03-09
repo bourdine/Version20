@@ -111,7 +111,8 @@ class MiningForegroundService : Service() {
             nativeMinerLib.startMining(poolUrl, walletAddress, workerName, "x", algo, 1)
             while (isRunning) {
                 if (BatteryOptimizationHelper.getBatteryLevel(this@MiningForegroundService) < 15) stopMining("Low battery")
-                if (BatteryOptimizationHelper.isOverheated(this@MiningForegroundService, 45f)) stopMining("Overheat")
+                // Используем порог по умолчанию 35°C (без явной передачи параметра)
+                if (BatteryOptimizationHelper.isOverheated(this@MiningForegroundService)) stopMining("Overheat")
                 updateNotification(nativeMinerLib.getHashrate(), nativeMinerLib.getAcceptedShares(), nativeMinerLib.getRejectedShares())
                 wakeLock?.acquire(10 * 60 * 1000L)
                 delay(5000)
