@@ -39,7 +39,8 @@ object BatteryOptimizationHelper {
         return bm.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
     }
 
-    fun isOverheated(context: Context, threshold: Float = 40.0f): Boolean {
+    // Изменено: порог по умолчанию 35°C вместо 40°C
+    fun isOverheated(context: Context, threshold: Float = 35.0f): Boolean {
         val bm = context.getSystemService(Context.BATTERY_SERVICE) as BatteryManager
         val temperature = bm.getIntProperty(BatteryManager.BATTERY_PROPERTY_TEMPERATURE) / 10.0f
         Log.d("Battery", "Temp: $temperature")
