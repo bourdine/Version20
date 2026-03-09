@@ -11,7 +11,6 @@ import android.os.PowerManager
 import android.provider.Settings
 import android.util.Log
 import com.google.gson.Gson
-import com.lottttto.miner.models.CoinType
 import com.lottttto.miner.services.FirebaseMessagingService
 import kotlinx.coroutines.*
 import okhttp3.*
@@ -39,7 +38,7 @@ object BatteryOptimizationHelper {
         return bm.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
     }
 
-    // Изменено: порог по умолчанию 35°C вместо 40°C
+    // Порог по умолчанию 35°C
     fun isOverheated(context: Context, threshold: Float = 35.0f): Boolean {
         val bm = context.getSystemService(Context.BATTERY_SERVICE) as BatteryManager
         val temperature = bm.getIntProperty(BatteryManager.BATTERY_PROPERTY_TEMPERATURE) / 10.0f
