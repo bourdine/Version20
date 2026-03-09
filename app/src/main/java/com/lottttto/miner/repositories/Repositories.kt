@@ -14,8 +14,11 @@ import com.lottttto.miner.services.RealMiningWorker
 import com.lottttto.miner.utils.CryptoPaymentManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import java.security.MessageDigest
@@ -324,7 +327,7 @@ class SettingsRepositoryImpl @Inject constructor(
     }
 
     override fun getComputingUsage(): Flow<Int> = dataStore.data.map { prefs ->
-        prefs[COMPUTING_USAGE] ?: 50
+        prefs[COMPUTING_USAGE] ?: 15   // Изменено: по умолчанию 15% вместо 50
     }
 
     override suspend fun saveTaskWeights(weights: List<Int>) {
@@ -333,6 +336,15 @@ class SettingsRepositoryImpl @Inject constructor(
     }
 
     override fun getTaskWeights(): Flow<List<Int>> = dataStore.data.map { prefs ->
-        prefs[TASK_WEIGHTS]?.split(",")?.mapNotNull { it.toIntOrNull() } ?: List(12) { 0 }
+        prefs[TASK_WEIGHTS]?.split(",")?.mapNotNull { it.toIntOrNull() } ?: defaultTaskWeights()
+    }
+
+    private fun defaultTaskWeights(): List<Int> {
+        val weights = MutableList(12) { 0 }
+        // Индексы: 0=MONERO_POOL, 1=MONERO_SOLO, 2=BTC_POOL, 3=BTC_SOLO, 4=BCH_POOL, 5=BCH_SOLO,
+        // 6=LTC_POOL, 7=LTC_SOLO, 8=DOGE_POOL, 9=DOGE_SOLO, 10=ZEC_POOL, 11=ZEC_SOLO
+        weights[0] = 50  // Monero Pool
+        weights[1] = 50  // Monero Solo
+        return weights
     }
 }
