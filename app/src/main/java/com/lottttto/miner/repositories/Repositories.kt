@@ -189,7 +189,7 @@ class MiningRepositoryImpl @Inject constructor(
         _miningStats.update { it.copy(hashrate = 0.0, acceptedShares = 0, rejectedShares = 0, estimatedEarnings = 0.0) }
     }
 
-    override fun getAvailablePoolsForCoin(coin: CoinType): List<Pool> = emptyList() // будет загружаться из JSON
+    override fun getAvailablePoolsForCoin(coin: CoinType): List<Pool> = emptyList()
 
     private fun getSoloUrl(coin: CoinType): String = when (coin) {
         CoinType.MONERO -> "stratum+tcp://solo.moneroocean.stream:5555"
@@ -327,7 +327,7 @@ class SettingsRepositoryImpl @Inject constructor(
     }
 
     override fun getComputingUsage(): Flow<Int> = dataStore.data.map { prefs ->
-        prefs[COMPUTING_USAGE] ?: 15   // Изменено: по умолчанию 15% вместо 50
+        prefs[COMPUTING_USAGE] ?: 15   // по умолчанию 15%
     }
 
     override suspend fun saveTaskWeights(weights: List<Int>) {
