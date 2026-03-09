@@ -193,7 +193,7 @@ class MiningViewModel @Inject constructor(
             miningRepository.miningStats,
             miningRepository.isMiningActive,
             walletRepository.getAllWallets(),
-            flow { emit(poolRepository.getPoolsForCoin(CoinType.MONERO)) } // упрощённо
+            flow { emit(poolRepository.getPoolsForCoin(CoinType.MONERO)) }
         ) { stats, isActive, wallets, pools ->
             _uiState.update { current ->
                 current.copy(
