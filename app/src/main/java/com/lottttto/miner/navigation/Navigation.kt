@@ -28,13 +28,41 @@ fun AuthNavGraph(onAuthSuccess: () -> Unit) {
     }
 
     NavHost(navController, startDestination) {
-        composable("landing") { LoginScreen( onLoginSuccess = {}, onNavigateToRegister = { navController.navigate("register") }, onNavigateToForgotPassword = { navController.navigate("forgot_password") }, viewModel = viewModel ) }
+        composable("landing") { LoginScreen(
+            onLoginSuccess = {},
+            onNavigateToRegister = { navController.navigate("register") },
+            onNavigateToForgotPassword = { navController.navigate("forgot_password") },
+            viewModel = viewModel
+        ) }
         composable("terms") { TermsScreen(onAgreed = { navController.navigate("register") { popUpTo("terms") { inclusive = true } } }) }
-        composable("register") { RegisterScreen( onRegisterSuccess = {}, onNavigateToLogin = { navController.navigate("login") }, viewModel = viewModel ) }
-        composable("login") { LoginScreen( onLoginSuccess = {}, onNavigateToRegister = { navController.navigate("register") }, onNavigateToForgotPassword = { navController.navigate("forgot_password") }, viewModel = viewModel ) }
-        composable("forgot_password") { ForgotPasswordScreen( onBackToLogin = { navController.popBackStack() }, viewModel = viewModel ) }
-        composable("set_pin") { SetPinScreen( onPinSet = { onAuthSuccess() }, viewModel = viewModel ) }
-        composable("enter_pin") { EnterPinScreen( email = uiState.userId ?: "User", onPinSuccess = { onAuthSuccess() }, onForgotPin = { viewModel.clearAll(); navController.popBackStack("landing", inclusive = false) }, viewModel = viewModel ) }
+        composable("register") { RegisterScreen(
+            onRegisterSuccess = {},
+            onNavigateToLogin = { navController.navigate("login") },
+            viewModel = viewModel
+        ) }
+        composable("login") { LoginScreen(
+            onLoginSuccess = {},
+            onNavigateToRegister = { navController.navigate("register") },
+            onNavigateToForgotPassword = { navController.navigate("forgot_password") },
+            viewModel = viewModel
+        ) }
+        composable("forgot_password") { ForgotPasswordScreen(
+            onBackToLogin = { navController.popBackStack() },
+            viewModel = viewModel
+        ) }
+        composable("set_pin") { SetPinScreen(
+            onPinSet = { onAuthSuccess() },
+            viewModel = viewModel
+        ) }
+        composable("enter_pin") { EnterPinScreen(
+            email = uiState.userId ?: "User",
+            onPinSuccess = { onAuthSuccess() },
+            onForgotPin = {
+                viewModel.clearAll()
+                navController.popBackStack("landing", inclusive = false)
+            },
+            viewModel = viewModel
+        ) }
     }
 
     LaunchedEffect(uiState.isLoggedIn, uiState.hasPin) {
@@ -61,7 +89,10 @@ fun AppNavGraph() {
             )
         }
         composable("wallet") { WalletScreen(onBack = { navController.popBackStack() }) }
-        composable("payment") { CryptoPaymentScreen( onBack = { navController.popBackStack() }, onPaymentSuccess = { navController.popBackStack("main", inclusive = false) } ) }
+        composable("payment") { CryptoPaymentScreen(
+            onBack = { navController.popBackStack() },
+            onPaymentSuccess = { navController.popBackStack("main", inclusive = false) }
+        ) }
         composable(
             route = "mining/{coinType}",
             arguments = listOf(navArgument("coinType") { type = NavType.StringType })
